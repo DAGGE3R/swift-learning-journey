@@ -432,3 +432,105 @@ struct User2: Identifiable2 {
 
 let twostraws = User2(id: "twostraws");
 twostraws.identify()
+
+// Optionals
+
+var age: Int? = nil // the question mark means it might hold an Int, or it might hold nothing – it might be nil.
+
+//strings 
+
+var name2  : String? = nil
+
+if let unwrapped = name2 {
+    print("\(unwrapped.count) letters")
+} else {
+    print("Missing name.")
+}
+
+
+//* guard let stay around after the guard finishes
+func greet(_ name: String?) {
+    guard let unwrapped = name else {
+        print("You didn't provide a name!")
+        return
+    }
+
+    print("Hello, \(unwrapped)!")
+}
+
+// Force unwrapping
+let num = Int(str)! //! crash if str doesn't contain a number
+
+//nil coalescing 
+
+func username(for id: Int) -> String? {
+    if id == 1 {
+        return "twostraws"
+    } else {
+        return nil
+    }
+}
+
+let user = username(for: 15) ?? "Anonymous"
+
+// optional chaining
+
+let names = ["John", "Paul", "George", "Ringo"]
+let beatle = names.first?.uppercased()
+print(beatle!)
+
+// optional try
+if let result = try? checkPassword("password") {
+    print("Result was \(result)")
+} else {
+    print("D'oh.")
+}
+
+//! only use try! when you’re sure the operation will succeed. Otherwise, you’ll be forced to deal with the crash using recoverableError.
+try! checkPassword("sekrit")
+print("OK!")
+
+// failable initializers
+
+struct Person2 {
+    var id: String
+
+    init?(id: String) {
+        if id.count == 9 {
+            self.id = id
+        } else {
+            return nil
+        }
+    }
+}
+
+// typecasting
+
+class Animal { }
+class Fish: Animal { }
+
+class Dog: Animal {
+    func makeNoise() {
+        print("Woof!")
+    }
+}
+
+let pets = [Fish(), Dog(), Fish(), Dog()]
+for pet in pets {
+    if let dog = pet as? Dog {
+        dog.makeNoise()
+    }
+}
+
+/*
+1 Optionals let us represent the absence of a value in a clear and unambiguous way.
+2 Swift won’t let us use optionals without unwrapping them, either using if let or using guard let.
+3 You can force unwrap optionals with an exclamation mark, but if you try to force unwrap nil your code will crash.
+4 Implicitly unwrapped optionals don’t have the safety checks of regular optionals.
+5 You can use nil coalescing to unwrap an optional and provide a default value if there was nothing inside.
+6 Optional chaining lets us write code to manipulate an optional, but if the optional turns out to be empty the code is ignored.
+7 You can use try? to convert a throwing function into an optional return value, or try! to crash if an error is thrown.
+8 If you need your initializer to fail when it’s given bad input, use init?() to make a failable initializer.
+9 You can use typecasting to convert one type of object to another.
+*/
+
